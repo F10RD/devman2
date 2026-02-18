@@ -2,80 +2,77 @@ import { BookingConfig } from './booking-types';
 
 export const barberConfig: BookingConfig = {
   businessName: 'Iron & Blade Barbershop',
-  businessEmail: 'info@ironblade.com',
-  layout: 'barber',
 
   services: [
     {
       id: 'classic-cut',
       name: 'Classic Haircut',
-      duration: 30,
-      price: 35,
-      description: 'Clean cut, styled to perfection',
+      category: 'Haircut',
+      duration: '30min',
+      price: '$35',
     },
     {
       id: 'beard-trim',
       name: 'Beard Trim & Shape',
-      duration: 20,
-      price: 25,
-      description: 'Sculpted beard, sharp lines',
+      category: 'Beard',
+      duration: '20min',
+      price: '$25',
     },
     {
       id: 'hot-shave',
       name: 'Hot Towel Shave',
-      duration: 40,
-      price: 45,
-      description: 'Traditional straight razor shave',
+      category: 'Shave',
+      duration: '40min',
+      price: '$45',
     },
     {
       id: 'cut-beard',
       name: 'Cut + Beard Combo',
-      duration: 50,
-      price: 55,
-      description: 'Full grooming experience',
+      category: 'Combo',
+      duration: '50min',
+      price: '$55',
     },
     {
       id: 'fade',
       name: 'Skin Fade',
-      duration: 45,
-      price: 40,
-      description: 'High, mid or low fade',
+      category: 'Haircut',
+      duration: '45min',
+      price: '$40',
     },
     {
       id: 'kids-cut',
       name: "Kid's Cut",
-      duration: 20,
-      price: 20,
-      description: 'Under 12 years old',
+      category: 'Haircut',
+      duration: '20min',
+      price: '$20',
     },
   ],
 
-  team: [
-    {
-      id: 'marcus',
-      name: 'Marcus',
-      role: 'Master Barber',
-      avatar: '✂️',
-    },
-    {
-      id: 'dante',
-      name: 'Dante',
-      role: 'Fade Specialist',
-      avatar: '💈',
-    },
-    {
-      id: 'ricky',
-      name: 'Ricky',
-      role: 'Beard Artist',
-      avatar: '🪒',
-    },
+  teamMembers: [
+    { id: 'marcus', name: 'Marcus', role: 'Master Barber' },
+    { id: 'dante',  name: 'Dante',  role: 'Fade Specialist' },
+    { id: 'ricky',  name: 'Ricky',  role: 'Beard Artist' },
+    { id: 'any',    name: 'No Preference', role: 'First Available' },
   ],
 
-  workingHours: {
-    start: '09:00',
-    end: '20:00',
-    slotDuration: 30,
+  businessHours: [
+    { day: 'Monday',    open: '09:00', close: '20:00' },
+    { day: 'Tuesday',   open: '09:00', close: '20:00' },
+    { day: 'Wednesday', open: '09:00', close: '20:00' },
+    { day: 'Thursday',  open: '09:00', close: '20:00' },
+    { day: 'Friday',    open: '09:00', close: '20:00' },
+    { day: 'Saturday',  open: '09:00', close: '18:00' },
+    { day: 'Sunday',    open: '09:00', close: '18:00', closed: true },
+  ],
+
+  timeSlotDuration: 30,
+  allowTeamSelection: true,
+  requirePhone: false,
+  minAdvanceBookingHours: 2,
+  maxAdvanceBookingDays: 60,
+
+  theme: {
+    primaryColor: 'orange',
+    accentColor: 'zinc',
   },
-
-  workingDays: [1, 2, 3, 4, 5, 6], // Pon–Sob (niedziela wolna)
 };

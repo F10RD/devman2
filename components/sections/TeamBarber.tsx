@@ -17,7 +17,7 @@ export default function TeamBarber() {
 
         {/* Team Grid */}
         <div className="grid md:grid-cols-3 gap-8">
-          {barberConfig.team.map((member) => (
+          {barberConfig.teamMembers.map((member) => (
             <div
               key={member.id}
               className="group bg-zinc-950 border border-zinc-800 hover:border-orange-500/50 

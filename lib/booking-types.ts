@@ -2,8 +2,8 @@ export type BookingService = {
   id: string;
   name: string;
   category: string;
-  duration: string;
-  price: string;
+  duration: number | string;  // ← number lub string
+  price: number | string;  
 };
 
 export type TeamMember = {
@@ -132,41 +132,54 @@ export const formatDate = (dateString: string): string => {
 // Calculate total duration from selected services
 export const calculateTotalDuration = (services: BookingService[]): number => {
   return services.reduce((total, service) => {
-    // Parse duration string (e.g., "1h 30min" -> 90)
-    const durationStr = service.duration.toLowerCase();
+    // ← ZAMIEŃ CAŁĄ LOGIKĘ duration na:
     let minutes = 0;
-
-    const hourMatch = durationStr.match(/(\d+)h/);
-    const minMatch = durationStr.match(/(\d+)min/);
-
-    if (hourMatch) minutes += parseInt(hourMatch[1]) * 60;
-    if (minMatch) minutes += parseInt(minMatch[1]);
-
+  
+    if (typeof service.duration === 'number') {
+      // Barber/Beauty config – duration już jest liczbą
+      minutes = service.duration;
+    } else {
+      // Professional config – duration jako string "1h 30min"
+      const durationStr = service.duration.toLowerCase();
+      const hourMatch = durationStr.match(/(\d+)h/);
+      const minMatch = durationStr.match(/(\d+)min/);
+      if (hourMatch) minutes += parseInt(hourMatch[1]) * 60;
+      if (minMatch) minutes += parseInt(minMatch[1]);
+      if (!hourMatch && !minMatch) minutes = parseInt(durationStr) || 0;
+    }
+  
     return total + minutes;
-  }, 0);
-};
-
+}, 0);
+}
 // Calculate total price from selected services
 export const calculateTotalPrice = (services: BookingService[]): number => {
   return services.reduce((total, service) => {
-    // Parse price string (e.g., "€120" -> 120, "from €120" -> 120)
-    const priceStr = service.price.replace(/[^\d.]/g, '');
-    const price = parseFloat(priceStr) || 0;
+    // ← ZAMIEŃ NA:
+    let price = 0;
+  
+    if (typeof service.price === 'number') {
+      // Barber/Beauty config – price już jest liczbą
+      price = service.price;
+    } else {
+      // Professional config – price jako string "€120" lub "from €120"
+      const priceStr = service.price.replace(/[^\d.]/g, '');
+      price = parseFloat(priceStr) || 0;
+    }
+  
     return total + price;
   }, 0);
-};
-
-// Format duration for display
-export const formatDuration = (minutes: number): string => {
-  const hours = Math.floor(minutes / 60);
-  const mins = minutes % 60;
-
-  if (hours === 0) return `${mins}min`;
-  if (mins === 0) return `${hours}h`;
-  return `${hours}h ${mins}min`;
-};
+}
 
 // Format price for display
 export const formatPrice = (price: number): string => {
   return `€${price.toFixed(0)}`;
+};
+
+// Format duration for display
+export const formatDuration = (minutes: number): string => {
+  if (typeof minutes !== 'number' || isNaN(minutes)) return '0 min';
+  if (minutes < 60) return `${minutes} min`;
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  return m > 0 ? `${h}h ${m}min` : `${h}h`;
 };

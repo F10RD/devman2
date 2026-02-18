@@ -35,9 +35,14 @@ export default function DateStep({
     today.getTime() + config.maxAdvanceBookingDays * 24 * 60 * 60 * 1000
   );
 
-  const formatDateForInput = (date: Date) => {
+  const formatDateForInput = (date: Date): string => {
+    // Guard – jeśli date jest nieprawidłowy zwróć dzisiejszą datę
+    if (!date || isNaN(date.getTime())) {
+      return new Date().toISOString().split('T')[0];
+    }
     return date.toISOString().split('T')[0];
   };
+  
 
   const handleDateChange = (dateString: string) => {
     setSelectedDate(dateString);
@@ -105,7 +110,7 @@ export default function DateStep({
           <div className="mt-4 p-4 rounded-lg bg-rosegold-500/10 border border-rosegold-500/50">
             <div className="text-neutral-300 text-sm mb-1">Selected Date:</div>
             <div className="text-neutral-100 font-semibold">
-              {new Date(selectedDate).toLocaleDateString('en-US', {
+              {new Date(selectedDate + 'T12:00:00').toLocaleDateString('en-US', {
                 weekday: 'long',
                 year: 'numeric',
                 month: 'long',
