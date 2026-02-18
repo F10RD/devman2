@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { BookingData, BookingConfig, formatDate } from '@/lib/booking-types';
 import { saveBooking, BookingRecord } from '@/lib/supabase';
-import { sendMockEmails } from '@/lib/email-service';
+import { sendEmails } from '@/lib/email-service';
 
 type ConfirmationStepProps = {
   config: BookingConfig;
@@ -46,7 +46,7 @@ export default function ConfirmationStep({
       const savedBooking = await saveBooking(bookingRecord);
       const id = savedBooking.id || '';
 
-      await sendMockEmails(bookingData, config, id);
+      await sendEmails(bookingData, config, id);
 
       setBookingId(id);
       setIsConfirmed(true);

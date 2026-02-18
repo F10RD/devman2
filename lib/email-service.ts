@@ -54,3 +54,15 @@ export const sendEmailsViaAPI = async (
     throw error;
   }
 };
+
+
+export const sendEmails = async (
+  bookingData: BookingData,
+  config: BookingConfig,
+  bookingId: string
+) => {
+  if (process.env.NEXT_PUBLIC_USE_REAL_EMAILS === 'true') {
+    return sendEmailsViaAPI(bookingData, config, bookingId);
+  }
+  return sendMockEmails(bookingData, config, bookingId);
+};
